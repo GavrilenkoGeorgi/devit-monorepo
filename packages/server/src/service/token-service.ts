@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 
 import tokenModel from '../models/token-model'
-import { tokenPayload } from '../types'
+import { tokenPayload, tokenData } from '../types'
 
 class TokenService {
   generateTokens(payload: tokenPayload) {
@@ -33,7 +33,7 @@ class TokenService {
   }
 
   async saveToken(userId: string, refreshToken: string) {
-    const tokenData = await tokenModel.findOne({ user: userId })
+    const tokenData = await tokenModel.findOne({ user: userId }) as tokenData
     if (tokenData) {
       tokenData.refreshToken = refreshToken
       return tokenData.save()
@@ -49,7 +49,7 @@ class TokenService {
   }
 
   async findToken(refreshToken: string) {
-    const tokenData = await tokenModel.findOne({ refreshToken })
+    const tokenData = await tokenModel.findOne({ refreshToken }) as tokenData
     return tokenData
   }
 }

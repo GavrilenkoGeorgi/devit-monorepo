@@ -29,7 +29,7 @@ class UserService {
   }
 
   async login({ email, password }: credProps) {
-    const user = await UserModel.findOne({ email })
+    const user = await UserModel.findOne({ email }) as credProps
 
     if (!user) {
       throw new Error('User not found.')

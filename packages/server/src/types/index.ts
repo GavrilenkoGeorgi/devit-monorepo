@@ -16,3 +16,10 @@ export type credProps = {
 export interface ICustomRequest extends Request {
     user?: string | JwtPayload
 }
+
+export type tokenData = {
+  _id: object,
+  user: object,
+  refreshToken: string
+  save: () => void
+}
