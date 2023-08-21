@@ -6,7 +6,7 @@
   "devDependencies": {},
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
-    "dev": "webpack serve --port 3000"
+    "dev:client": "webpack serve --port 3000"
   },
   "keywords": [],
   "author": "",
