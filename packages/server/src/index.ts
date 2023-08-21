@@ -18,11 +18,7 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(cors())
 
-app.use('/', router)
-
-app.get('/', (req, res) => {
-  res.send('What\'s up doc ?!')
-})
+app.use('/api', router)
 
 const run = async () => {
   try {

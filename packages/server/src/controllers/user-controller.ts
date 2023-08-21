@@ -1,9 +1,13 @@
 import { Request, Response, NextFunction } from 'express'
 import userService from '../service/user-service'
 
+import { CreateUserInput } from '../schemas/user.schema'
+
 class UserController {
 
-  async registration(req: Request, res: Response) {
+  async registration(
+    req: Request<object, object, CreateUserInput['body']>,
+    res: Response) {
     try {
       const { email, password } = req.body
       const userData = await userService.registration({ email, password })
