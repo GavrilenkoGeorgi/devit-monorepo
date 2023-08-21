@@ -31,7 +31,7 @@ class RssController {
     })
   }
 
-  async getRssItems(req: Request, res: Response, next: NextFunction) {
+  async getItems(req: Request, res: Response, next: NextFunction) {
     try {
       const items = await rssService.getAllItems()
       return res.json(items)
@@ -40,6 +40,40 @@ class RssController {
     }
   }
 
+  async newItem(req: Request, res: Response, next: NextFunction) {
+    try {
+      console.log('new item')
+      return res.status(200).end()
+    } catch (err) {
+      next(err)
+    }
+  }
+
+  async updateItem(req: Request, res: Response, next: NextFunction) {
+    try {
+      return res.status(200).end()
+    } catch (err) {
+      next(err)
+    }
+  }
+
+  async deleteItem(req: Request, res: Response, next: NextFunction) {
+    try {
+      console.log('delete item')
+      return res.status(200).end() // status code!
+    } catch (err) {
+      next(err)
+    }
+  }
+
+  async getItem(req: Request, res: Response, next: NextFunction) {
+    try {
+      const item = await rssService.getItem(req.params.id)
+      return res.json(item)
+    } catch (err) {
+      next(err)
+    }
+  }
 }
 
 export default new RssController()
