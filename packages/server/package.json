@@ -1,0 +1,14 @@
+{
+  "name": "@monorepo/server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/index.js",
+  "scripts": {
+    "start": "node build/index.js",
+    "build": "npx tsc",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q build/index.js\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
