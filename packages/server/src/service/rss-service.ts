@@ -2,8 +2,8 @@ import RssItemModel from '../models/rss-item-model'
 
 class RssService {
 
-  async getAllItems() {
-    const items = await RssItemModel.find()
+  async getAllItems(limit: number, page: number) {
+    const items = await RssItemModel.paginate({}, { limit, page })
     return items
   }
 

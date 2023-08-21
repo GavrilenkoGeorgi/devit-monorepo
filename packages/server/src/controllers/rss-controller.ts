@@ -33,7 +33,9 @@ class RssController {
 
   async getItems(req: Request, res: Response, next: NextFunction) {
     try {
-      const items = await rssService.getAllItems()
+      const limit = parseInt(req.query.limit as string) || 10
+      const page =  parseInt(req.query.page as string) || 1
+      const items = await rssService.getAllItems(limit, page)
       return res.json(items)
     } catch (err) {
       next(err)
