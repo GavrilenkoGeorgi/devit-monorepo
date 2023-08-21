@@ -7,7 +7,8 @@ import Login from '../pages/Login'
 import Logout from '../pages/Logout'
 
 const Routes = () => {
-  const routesForPublic = [
+
+  const publicRoutes = [
     {
       path: '/feed',
       element: <h1>Feed page</h1>
@@ -18,7 +19,7 @@ const Routes = () => {
     }
   ]
 
-  const routesForAuthenticatedOnly = [
+  const authOnlyRoutes = [
     {
       path: '/',
       element: <ProtectedRoute />,
@@ -35,20 +36,20 @@ const Routes = () => {
     }
   ]
 
-  const routesForNotAuthenticatedOnly = [
+  const noAuthRoutes = [
     {
       path: '/',
-      element: <h1>'routesForNotAuthenticatedOnly'</h1>,
+      element: <h1>noAuthRoutes</h1>,
     }
   ]
 
   const authContext = useAuth()
 
-  // Route configurations go here
+  // Compile routes into this:
   const router = createBrowserRouter([
-    ...routesForPublic,
-    ...(!authContext?.token ? routesForNotAuthenticatedOnly : []),
-    ...routesForAuthenticatedOnly,
+    ...publicRoutes,
+    ...(!authContext?.token ? noAuthRoutes : []), // token check looks strange
+    ...authOnlyRoutes,
   ])
 
   return <RouterProvider router={router} />
