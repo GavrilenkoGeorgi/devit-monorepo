@@ -7,7 +7,7 @@ import rssService from '../service/rss-service'
 class RssController {
 
   async scheduleFetch() {
-    cron.schedule('* 1 * * * *', () => {
+    cron.schedule('*/15 * * * *', () => {
       console.log('Scheduled fetch.')
       this.fetchRssFeed()
     })
