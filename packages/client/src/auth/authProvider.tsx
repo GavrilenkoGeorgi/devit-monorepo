@@ -1,5 +1,5 @@
-import React, { FC, ReactNode, useContext, useEffect, useMemo, useState } from 'react'
-import axios from 'axios'
+import React, { FC, ReactNode, useContext, useMemo, useState } from 'react'
+// import axios from 'axios'
 import { AuthContext } from './authContext'
 
 type AuthProviderProps = { // this doesn't belong here
@@ -14,7 +14,7 @@ const AuthProvider:FC<AuthProviderProps> = ({ children }) => {
     setToken_(newToken)
   }
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (token) {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
       localStorage.setItem('token',token)
@@ -22,7 +22,7 @@ const AuthProvider:FC<AuthProviderProps> = ({ children }) => {
       delete axios.defaults.headers.common['Authorization']
       localStorage.removeItem('token')
     }
-  }, [token])
+  }, [token]) */
 
   const contextValue = useMemo(
     () => ({

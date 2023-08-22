@@ -1,17 +1,24 @@
 import React from 'react'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import { useAuth } from '../provider/authProvider'
+import { useAuth } from '../auth/authProvider'
 import { ProtectedRoute } from './ProtectedRoute'
 
 import Login from '../pages/Login'
 import Logout from '../pages/Logout'
+import Users from '../pages/Users'
+import Admin from '../pages/Admin'
+import Feed from '../pages/Feed'
 
 const Routes = () => {
 
   const publicRoutes = [
     {
+      path: '/',
+      element: <h1>Main page</h1>
+    },
+    {
       path: '/feed',
-      element: <h1>Feed page</h1>
+      element: <Feed />
     },
     {
       path: '/login',
@@ -25,8 +32,12 @@ const Routes = () => {
       element: <ProtectedRoute />,
       children: [
         {
-          path: '/',
-          element: <div>Admin Root</div>
+          path: '/users',
+          element: <Users />
+        },
+        {
+          path: '/admin',
+          element: <Admin />
         },
         {
           path: '/logout',
@@ -38,8 +49,8 @@ const Routes = () => {
 
   const noAuthRoutes = [
     {
-      path: '/',
-      element: <h1>noAuthRoutes</h1>,
+      path: '/feed',
+      element: <h1>Main page</h1>,
     }
   ]
 
