@@ -1,15 +1,13 @@
 import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 
-export function useRssFeed() {
+export const useRssFeed = ((url: string) => {
+
   return useQuery({
     queryKey: ['rss-items'],
     queryFn: async () => {
-      const { data } = await axios.get(
-        'http://localhost:5000/api/rss-items',
-      )
-      console.log(data)
+      const { data } = await axios.get(url)
       return data
     },
   })
-}
+})

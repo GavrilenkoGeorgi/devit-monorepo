@@ -8,13 +8,14 @@ import Logout from '../pages/Logout'
 import Users from '../pages/Users'
 import Admin from '../pages/Admin'
 import Feed from '../pages/Feed'
+import MainPage from '../pages/MainPage'
 
 const Routes = () => {
 
   const publicRoutes = [
     {
       path: '/',
-      element: <h1>Main page</h1>
+      element: <MainPage/>
     },
     {
       path: '/feed',
