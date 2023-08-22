@@ -53,7 +53,11 @@ class RssController {
 
   async updateItem(req: Request, res: Response, next: NextFunction) {
     try {
-      return res.status(200).end()
+      const { title, link, pubDate } = req.body
+      const id = req.params.id
+
+      const updatedItem = await rssService.updateItem({ id, title, link, pubDate })
+      return res.json(updatedItem)
     } catch (err) {
       next(err)
     }

@@ -5,8 +5,8 @@ import { tokenPayload, tokenData } from '../types'
 
 class TokenService {
   generateTokens(payload: tokenPayload) {
-    const accessToken = jwt.sign(payload, process.env.JWT_SECRET || '', { expiresIn: '30m' })
-    const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH || '', { expiresIn: '7d' })
+    const accessToken = jwt.sign(payload, process.env.JWT_SECRET || '', { expiresIn: '7d' })
+    const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH || '', { expiresIn: '14d' })
 
     return {
       accessToken,

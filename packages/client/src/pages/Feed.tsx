@@ -39,17 +39,13 @@ const Posts = () => {
           <div>
             Total: {data.total}
           </div>
-          <div>
-            <div>
-              <PaginationComponent
-                itemsCount={data.total}
-                currentPage={currentPage}
-                itemsPerPage={data.limit}
-                setCurrentPage={setCurrentPage}
-                setUrl={setUrl}
-              />
-            </div>
-          </div>
+          <PaginationComponent
+            itemsCount={data.total}
+            currentPage={currentPage}
+            itemsPerPage={data.limit}
+            setCurrentPage={setCurrentPage}
+            setUrl={setUrl}
+          />
         </div>
         )}
       </div>
