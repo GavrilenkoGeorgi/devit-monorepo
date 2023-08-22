@@ -13,6 +13,7 @@
   "author": "Gavrilenko",
   "license": "ISC",
   "dependencies": {
+    "@tanstack/react-query": "^4.33.0",
     "axios": "^1.4.0",
     "bcrypt": "^5.1.1",
     "bootstrap": "^5.3.1",
@@ -31,6 +32,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@tanstack/react-query-devtools": "^4.33.0",
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.13",
