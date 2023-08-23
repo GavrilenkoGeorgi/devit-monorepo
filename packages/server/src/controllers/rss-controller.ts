@@ -44,8 +44,9 @@ class RssController {
 
   async newItem(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log('new item')
-      return res.status(200).end()
+      const { title, link, pubDate } = req.body
+      const itemData = await rssService.createItem(title, link, pubDate)
+      return res.json(itemData)
     } catch (err) {
       next(err)
     }

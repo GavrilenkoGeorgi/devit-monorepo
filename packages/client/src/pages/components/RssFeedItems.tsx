@@ -13,7 +13,6 @@ const RssFeedItems = ({ docs }: RssFeedItemsProps) => {
   const [ itemData, setItemData ] = useState<post>({} as post)
 
   const editItem = (post: post) => {
-    console.log('editing', post)
     setItemData(post)
     setShowForm(true)
   }
@@ -36,7 +35,7 @@ const RssFeedItems = ({ docs }: RssFeedItemsProps) => {
       ))}
       {showForm &&
         <div>
-          <RssItemEditForm itemData={itemData} />
+          <RssItemEditForm itemData={itemData} setShowForm={setShowForm}/>
         </div>
       }
     </div>

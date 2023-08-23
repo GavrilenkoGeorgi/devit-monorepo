@@ -4,7 +4,7 @@ import mongoosePaginate from 'mongoose-paginate'
 export const RssItemSchema = new Schema({
   title: String,
   link: String,
-  pubDate: Date
+  pubDate: String
 })
 
 RssItemSchema.plugin(mongoosePaginate)

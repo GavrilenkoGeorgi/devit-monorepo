@@ -1,54 +1,41 @@
-import React, { FC, useState, useEffect } from 'react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import RssFeedItems from './components/RssFeedItems'
-import { useRssFeed } from '../queries/rss-feed'
+import React, { FC, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 
+import { post } from '../types'
+import RssItemsService from '../services/RssItemsService'
 import PaginationComponent from './components/PaginationComponent'
 
-const queryClient = new QueryClient()
-
 const Feed: FC = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Posts />
-      <ReactQueryDevtools initialIsOpen />
-    </QueryClientProvider>
-  )
-}
-const Posts = () => {
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const [url, setUrl] = useState('http://localhost:5000/api/rss-items') // this url need fixing!
-  const { status, data, refetch } = useRssFeed(url)
+  const [ page, setPage ] = useState(1)
 
-  useEffect(() => {
-    refetch()
-  }, [url])
+  const feedQuery = useQuery({
+    queryKey: ['rss-items', { page }],
+    keepPreviousData: true,
+    queryFn: () => RssItemsService.getItems(page)
+  })
+
+  if (feedQuery.status === 'loading') return <h1>Loading...</h1>
+  if (feedQuery.status === 'error') {
+    return <h1>{JSON.stringify(feedQuery.error)}</h1>
+  }
+
+  const { data: items } = feedQuery
 
   return (
     <div>
-      <h1>RSS feed</h1>
-      <div>
-        {status === 'loading' ? (
-          'Loading...'
-        ) : status === 'error' ? (
-          <span>Error: {'error.message'}</span>
-        ) : ( <div>
-          <RssFeedItems docs={data.docs}/>
-          <div>
-            Total: {data.total}
-          </div>
-          <PaginationComponent
-            itemsCount={data.total}
-            currentPage={currentPage}
-            itemsPerPage={data.limit}
-            setCurrentPage={setCurrentPage}
-            setUrl={setUrl}
-          />
-        </div>
-        )}
-      </div>
+      <h1>Feed</h1>
+      <ul>
+        {items.data.docs.map((item: post) => (
+          <li key={item._id}>{item.title}</li>
+        ))}
+      </ul>
+      <PaginationComponent
+        itemsCount={items.data.total}
+        currentPage={page}
+        itemsPerPage={items.data.limit}
+        setPage={setPage}
+      />
     </div>
   )
 }

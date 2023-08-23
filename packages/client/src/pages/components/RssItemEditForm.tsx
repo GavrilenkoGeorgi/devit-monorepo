@@ -1,13 +1,17 @@
-import React, { useState, FC } from 'react'
+import React, { useState, FC, SetStateAction, Dispatch } from 'react'
 import RssItemsService from '../../services/RssItemsService'
+import { QueryClient } from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
 
 import { post } from '../../types'
 
 type RssItemEditFormProps = {
-  itemData: post
+  itemData: post,
+  setShowForm: Dispatch<SetStateAction<boolean>>
 }
 
-const RssItemEditForm: FC<RssItemEditFormProps> = ({ itemData }) => {
+const RssItemEditForm: FC<RssItemEditFormProps> = ({ itemData, setShowForm }) => {
 
   const [ title, setTitle ] = useState(itemData.title)
   const [ link, setLink ] = useState(itemData.link)
@@ -22,6 +26,8 @@ const RssItemEditForm: FC<RssItemEditFormProps> = ({ itemData }) => {
       _id: itemData._id
     }
     RssItemsService.updateItem(data)
+    setShowForm(false)
+    queryClient.setQueryData(['rss-items'], {...data, title: 'set query'})
   }
 
   return <div className='form-container'>
