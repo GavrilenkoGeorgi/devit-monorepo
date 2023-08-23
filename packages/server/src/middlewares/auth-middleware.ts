@@ -22,7 +22,6 @@ const authMiddleware = (req: ICustomRequest, res: Response, next: NextFunction) 
       return next(new Error('User not found.'))
     }
 
-    // req.user = userData // ???
     next()
 
   } catch (err) {
