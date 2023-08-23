@@ -7,7 +7,7 @@ import CreateRssItem from './components/CreateRssItem'
 const Admin: FC = () => {
   return <Container>
     <Row>
-      <Col>
+      <Col xs={12} md={8} className='m-auto'>
         <h1 className='text-center my-5'>Admin</h1>
         <CreateRssItem />
         <Feed />

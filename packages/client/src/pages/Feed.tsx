@@ -1,4 +1,4 @@
-import React, { FC, useState, useContext, useEffect } from 'react'
+import React, { FC, useState, useContext } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Context } from '../store'
 import { observer } from 'mobx-react-lite'
@@ -18,10 +18,6 @@ const Feed: FC = () => {
   const [ post, setPost ] = useState<post>({} as post)
 
   const { store } = useContext(Context)
-
-  useEffect(() => {
-    console.log(store.isAuth)
-  }, [store.isAuth])
 
   const feedQuery = useQuery({
     queryKey: ['rss-items', { page }],
@@ -45,7 +41,7 @@ const Feed: FC = () => {
     const pathname = window.location.pathname
     if (store.isAuth && pathname === '/admin') {
       return <div>
-        <Button variant='primary' className='mx-2' onClick={() => editItem(item)}>
+        <Button variant='primary' className='m-2' onClick={() => editItem(item)}>
           Edit
         </Button>
         <DeleteRssItem id={item._id}/>
@@ -56,17 +52,15 @@ const Feed: FC = () => {
   return (
     <Container>
       <h1 className='text-center my-5'>Feed</h1>
+      <ListGroup>
+        {items.data.docs.map((item: post) => (
+          <ListGroup.Item key={item._id} className='py-3 d-flex justify-content-between'>
+            {item.title}
+            {editBtns(item)}
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
       <Row>
-        <Col xs={12}>
-          <ListGroup>
-            {items.data.docs.map((item: post) => (
-              <ListGroup.Item key={item._id} className='py-3 d-flex justify-content-between'>
-                {item.title}
-                {editBtns(item)}
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
-        </Col>
         <Col xs={12} className='mt-5 d-flex justify-content-center'>
           <PaginationComponent
             itemsCount={items.data.total}

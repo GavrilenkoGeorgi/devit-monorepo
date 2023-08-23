@@ -14,6 +14,7 @@ const App: FC = () => {
   const { store } = useContext(Context)
 
   useEffect(() => {
+    // check if refresh is possible
     if (localStorage.getItem('token')) {
       store.checkAuth()
     }
