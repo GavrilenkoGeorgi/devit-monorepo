@@ -5,8 +5,7 @@ type PaginationComponentProps = {
   itemsCount: number,
   currentPage: number,
   itemsPerPage: number,
-  setCurrentPage: (number: number) => void,
-  setUrl: (url: string) => void,
+  setPage: (number: number) => void,
   alwaysShown?: boolean
 }
 
@@ -14,8 +13,7 @@ const PaginationComponent = ({
   itemsCount,
   itemsPerPage,
   currentPage,
-  setUrl,
-  setCurrentPage,
+  setPage,
   alwaysShown = true
 }: PaginationComponentProps) => {
   const pagesCount = Math.ceil(itemsCount / itemsPerPage)
@@ -25,8 +23,7 @@ const PaginationComponent = ({
 
   const changePage = (number: number) => {
     if (currentPage === number) return
-    setCurrentPage(number)
-    setUrl(`http://localhost:5000/api/rss-items?page=${number}`)
+    setPage(number)
   }
 
   const onPageNumberClick = (pageNumber: number) => {
@@ -43,7 +40,7 @@ const PaginationComponent = ({
 
   const setLastPageAsCurrent = () => {
     if (currentPage > pagesCount) {
-      setCurrentPage(pagesCount)
+      setPage(pagesCount)
     }
   }
 

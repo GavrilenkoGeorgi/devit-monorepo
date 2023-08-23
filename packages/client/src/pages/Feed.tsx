@@ -1,55 +1,87 @@
-import React, { FC, useState, useEffect } from 'react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import RssFeedItems from './components/RssFeedItems'
-import { useRssFeed } from '../queries/rss-feed'
+import React, { FC, useState, useContext, useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { Context } from '../store'
 
+import { ListGroup, Container, Row, Col, Button } from 'react-bootstrap'
+
+import { post } from '../types'
+import RssItemsService from '../services/RssItemsService'
 import PaginationComponent from './components/PaginationComponent'
-
-const queryClient = new QueryClient()
+import EditRssItem from './components/EditRssItem'
+import DeleteRssItem from './components/DeleteRssItem'
 
 const Feed: FC = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Posts />
-      <ReactQueryDevtools initialIsOpen />
-    </QueryClientProvider>
-  )
-}
-const Posts = () => {
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const [url, setUrl] = useState('http://localhost:5000/api/rss-items') // this url need fixing!
-  const { status, data, refetch } = useRssFeed(url)
+  const [ page, setPage ] = useState(1)
+  const [ edit, setEdit ] = useState(false)
+  const [ post, setPost ] = useState<post>({} as post)
+
+  const { store } = useContext(Context)
 
   useEffect(() => {
-    refetch()
-  }, [url])
+    console.log(store.isAuth)
+  }, [store.isAuth])
+
+  const feedQuery = useQuery({
+    queryKey: ['rss-items', { page }],
+    keepPreviousData: true,
+    queryFn: () => RssItemsService.getItems(page)
+  })
+
+  if (feedQuery.status === 'loading') return <h1>Loading...</h1>
+  if (feedQuery.status === 'error') {
+    return <h1>{JSON.stringify(feedQuery.error)}</h1>
+  }
+
+  const { data: items } = feedQuery
+
+  const editItem = (item: post) => {
+    setEdit(true)
+    setPost(item)
+  }
+
+  const editBtns = (item: post) => {
+    if (store.isAuth) {
+      return <div>
+        <Button variant='primary' className='mx-2' onClick={() => editItem(item)}>
+          Edit
+        </Button>
+        <DeleteRssItem id={item._id}/>
+      </div>
+    } else return null
+  }
 
   return (
-    <div>
-      <h1>RSS feed</h1>
-      <div>
-        {status === 'loading' ? (
-          'Loading...'
-        ) : status === 'error' ? (
-          <span>Error: {'error.message'}</span>
-        ) : ( <div>
-          <RssFeedItems docs={data.docs}/>
-          <div>
-            Total: {data.total}
-          </div>
+    <Container>
+      <h1 className='text-center my-5'>Feed</h1>
+      <Row>
+        <Col xs={12}>
+          <ListGroup>
+            {items.data.docs.map((item: post) => (
+              <ListGroup.Item key={item._id} className='py-3 d-flex justify-content-between'>
+                {item.title}
+                {editBtns(item)}
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        </Col>
+        <Col xs={12} className='mt-5 d-flex justify-content-center'>
           <PaginationComponent
-            itemsCount={data.total}
-            currentPage={currentPage}
-            itemsPerPage={data.limit}
-            setCurrentPage={setCurrentPage}
-            setUrl={setUrl}
+            itemsCount={items.data.total}
+            currentPage={page}
+            itemsPerPage={items.data.limit}
+            setPage={setPage}
           />
-        </div>
-        )}
-      </div>
-    </div>
+        </Col>
+        <EditRssItem
+          open={edit}
+          setEdit={setEdit}
+          title={post.title}
+          link={post.link}
+          id={post._id}
+        />
+      </Row>
+    </Container>
   )
 }
 
