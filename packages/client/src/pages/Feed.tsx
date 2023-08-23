@@ -1,6 +1,7 @@
 import React, { FC, useState, useContext, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Context } from '../store'
+import { observer } from 'mobx-react-lite'
 
 import { ListGroup, Container, Row, Col, Button } from 'react-bootstrap'
 
@@ -41,7 +42,8 @@ const Feed: FC = () => {
   }
 
   const editBtns = (item: post) => {
-    if (store.isAuth) {
+    const pathname = window.location.pathname
+    if (store.isAuth && pathname === '/admin') {
       return <div>
         <Button variant='primary' className='mx-2' onClick={() => editItem(item)}>
           Edit
@@ -85,4 +87,4 @@ const Feed: FC = () => {
   )
 }
 
-export default Feed
+export default observer(Feed)
