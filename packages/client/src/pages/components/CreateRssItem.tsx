@@ -25,6 +25,7 @@ const CreateRssItem: FC = () => {
       title: titleRef.current?.value || '',
       link: linkRef.current?.value || '',
       pubDate: 'date', //!
+      _id: ''
     })
   }
 
@@ -38,7 +39,7 @@ const CreateRssItem: FC = () => {
           <input id='title' ref={titleRef} />
         </div>
         <div>
-          <label htmlFor='body'>Body</label>
+          <label htmlFor='link'>Link</label>
           <input id='link' ref={linkRef} />
         </div>
         <button disabled={createItemMutation.isLoading}>

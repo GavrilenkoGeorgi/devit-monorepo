@@ -1,6 +1,6 @@
 export type post = {
-  _id?: string,
+  _id: string,
   title: string,
-  pubDate: string,
+  pubDate?: string,
   link: string
 }
