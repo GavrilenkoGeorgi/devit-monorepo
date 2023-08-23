@@ -26,8 +26,12 @@ class RssService {
 
   async updateItem({ id, title, link, pubDate }: itemUpdProps) {
     const item = await RssItemModel.findByIdAndUpdate(id, { id, title, link, pubDate })
-    console.log('updated item', item)
     return item
+  }
+
+  async deleteItem(id: string) {
+    const tokenData = await RssItemModel.findByIdAndDelete(id)
+    return tokenData
   }
 }
 

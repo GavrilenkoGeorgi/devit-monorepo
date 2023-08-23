@@ -66,8 +66,9 @@ class RssController {
 
   async deleteItem(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log('delete item')
-      return res.status(200).end() // status code!
+      const id = req.params.id
+      const result = await rssService.deleteItem(id)
+      return res.json(result)
     } catch (err) {
       next(err)
     }
