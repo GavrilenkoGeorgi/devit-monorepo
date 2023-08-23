@@ -1,24 +1,29 @@
 import React, { FC, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-// import { useAuth } from '../auth/authProvider'
-import { Context } from '../index'
+import { Context } from '../store/index'
+
+import { Container, Row, Col, Button } from 'react-bootstrap'
 
 const Logout: FC = () => {
-  // const authContext = useAuth()
-  const navigate = useNavigate()
 
+  const navigate = useNavigate()
   const { store } = useContext(Context)
   
   const handleLogout = () => {
     store.logout()
-    // authContext?.setToken('')
     navigate('/', { replace: true })
   }
 
-  return <>
-    Logout Page
-    <button onClick={handleLogout}>Logout</button>
-  </>
+  return <Container>
+    <h1 className='text-center my-5 '>Logout</h1>
+    <Row>
+      <Col className='text-center'>
+        <Button onClick={handleLogout}>
+          Logout
+        </Button>
+      </Col>
+    </Row>
+  </Container>
 }
 
 export default Logout

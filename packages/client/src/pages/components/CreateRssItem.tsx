@@ -1,8 +1,8 @@
-import React, { FC, FormEventHandler, FormEvent } from 'react'
+import React, { FC, FormEventHandler, FormEvent, useRef } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useRef } from 'react'
 
 import RssItemsService from '../../services/RssItemsService'
+import { Container, Button, Form } from 'react-bootstrap'
 
 const CreateRssItem: FC = () => {
 
@@ -24,30 +24,27 @@ const CreateRssItem: FC = () => {
     createItemMutation.mutate({
       title: titleRef.current?.value || '',
       link: linkRef.current?.value || '',
-      pubDate: 'date', //!
       _id: ''
     })
   }
 
-  return (
-    <div>
-      {createItemMutation.isError && JSON.stringify(createItemMutation.error)}
-      <h1>Create Post</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor='title'>Title</label>
-          <input id='title' ref={titleRef} />
-        </div>
-        <div>
-          <label htmlFor='link'>Link</label>
-          <input id='link' ref={linkRef} />
-        </div>
-        <button disabled={createItemMutation.isLoading}>
-          {createItemMutation.isLoading ? 'Loading...' : 'Create'}
-        </button>
-      </form>
-    </div>
-  )
+  return <Form onSubmit={handleSubmit}>
+    <Form.Group className='mb-3' controlId='title'>
+      <Form.Label>Title</Form.Label>
+      <Form.Control type='text' placeholder='Enter title'ref={titleRef} />
+    </Form.Group>
+
+    <Form.Group className='mb-3' controlId='link'>
+      <Form.Label>Link</Form.Label>
+      <Form.Control type='text' placeholder='Enter link' ref={linkRef} />
+    </Form.Group>
+    <Container className='text-center'>
+      <Button variant='primary' type='submit' className='mx-2' disabled={createItemMutation.isLoading}>
+        {createItemMutation.isLoading ? 'Loading...' : 'Create'}
+      </Button>
+
+    </Container>
+  </Form>
 }
 
 export default CreateRssItem

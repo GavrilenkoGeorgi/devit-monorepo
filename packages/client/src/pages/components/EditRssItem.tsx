@@ -3,10 +3,11 @@ import React, {
   useEffect,
   FormEventHandler,
   FormEvent, useState,
-  Dispatch, SetStateAction,
+  Dispatch, SetStateAction, useRef
 } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useRef } from 'react'
+import { Container, Row, Col, Form, Button } from 'react-bootstrap'
+
 
 import RssItemsService from '../../services/RssItemsService'
 
@@ -53,36 +54,46 @@ const EditRssItem: FC<EditRssItemProps> = ({ id, title, link, open, setEdit }) =
     setEdit(false)
   }
 
-  if (open) {
-    return (
-      <div className='form-container'>
+  if (!open) return null
+
+  return (
+    <Container className='form-container'>
+      <Row>
         {updateItemMutation.isError && JSON.stringify(updateItemMutation.error)}
-        <h1>Edit Post</h1>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor='title'>Title</label>
-            <input id='title'
-              ref={titleRef}
-              value={titleValue || ''}
-              onChange={e => setTitle(e.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor='link'>Link</label>
-            <input id='link'
-              ref={linkRef} value={linkValue || ''}
-              onChange={e => setLink(e.target.value)}
-            />
-          </div>
-          <button disabled={updateItemMutation.isLoading}>
-            {updateItemMutation.isLoading ? 'Loading...' : 'Update'}
-          </button>
-          <button onClick={() => setEdit(false)}>
-            Close
-          </button>
-        </form>
-      </div>
-    )} else return null
+        <Col>
+          <Form onSubmit={handleSubmit} className='edit-form'>
+            <h1 className='text-center mb-5'>Edit Post</h1>
+            <Form.Group className="mb-3" controlId="title">
+              <Form.Label>Title</Form.Label>
+              <Form.Control
+                type="text"
+                ref={titleRef}
+                value={titleValue || ''}
+                onChange={e => setTitle(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="link">
+              <Form.Label>Link</Form.Label>
+              <Form.Control
+                type="text"
+                ref={linkRef} value={linkValue || ''}
+                onChange={e => setLink(e.target.value)}
+              />
+            </Form.Group>
+            <Container className='text-center'>
+              <Button type='submit' disabled={updateItemMutation.isLoading} className='mx-3'>
+                {updateItemMutation.isLoading ? 'Loading...' : 'Update'}
+              </Button>
+              <Button onClick={() => setEdit(false)} className='mx-3' variant='secondary'>
+                Cancel
+              </Button>
+            </Container>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
+  )
 }
 
 export default EditRssItem

@@ -1,7 +1,6 @@
-import React, { 
-  FC
-} from 'react'
+import React, { FC } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Button } from 'react-bootstrap'
 
 import RssItemsService from '../../services/RssItemsService'
 
@@ -12,7 +11,6 @@ type delProps = {
 const DeleteRssItem: FC<delProps> = ({ id }) => {
 
   const queryClient = useQueryClient()
-
   const deleteItemMutation = useMutation({
     mutationFn: RssItemsService.deleteItem,
     onSuccess: ({ data }) => {
@@ -21,15 +19,11 @@ const DeleteRssItem: FC<delProps> = ({ id }) => {
     },
   })
 
-  const handleDelete = (e: React.MouseEvent<HTMLElement>) => {
-    console.log('delete')
-    e.preventDefault()
+  const handleDelete = () => {
     deleteItemMutation.mutate(id)
   }
 
-  return <>
-    <button onClick={e => handleDelete(e)}>Delete</button>
-  </>
+  return <Button variant='danger' onClick={() => handleDelete()}>Delete</Button>
 }
 
 export default DeleteRssItem

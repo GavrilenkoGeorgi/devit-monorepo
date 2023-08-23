@@ -1,6 +1,8 @@
 import React, { FC, useState, useContext, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Context } from '../index'
+import { Context } from '../store'
+
+import { ListGroup, Container, Row, Col, Button } from 'react-bootstrap'
 
 import { post } from '../types'
 import RssItemsService from '../services/RssItemsService'
@@ -38,40 +40,48 @@ const Feed: FC = () => {
     setPost(item)
   }
 
-  const editBtn = (item: post) => {
+  const editBtns = (item: post) => {
     if (store.isAuth) {
       return <div>
-        <button onClick={() => editItem(item)}>edit</button>
+        <Button variant='primary' className='mx-2' onClick={() => editItem(item)}>
+          Edit
+        </Button>
         <DeleteRssItem id={item._id}/>
       </div>
     } else return null
   }
 
   return (
-    <div>
-      <h1>Feed</h1>
-      <ul>
-        {items.data.docs.map((item: post) => (
-          <div key={item._id}>
-            <li key={item._id}>{item.title}</li>
-            {editBtn(item)}
-          </div>
-        ))}
-      </ul>
-      <PaginationComponent
-        itemsCount={items.data.total}
-        currentPage={page}
-        itemsPerPage={items.data.limit}
-        setPage={setPage}
-      />
-      <EditRssItem
-        open={edit}
-        setEdit={setEdit}
-        title={post.title}
-        link={post.link}
-        id={post._id}
-      />
-    </div>
+    <Container>
+      <h1 className='text-center my-5'>Feed</h1>
+      <Row>
+        <Col xs={12}>
+          <ListGroup>
+            {items.data.docs.map((item: post) => (
+              <ListGroup.Item key={item._id} className='py-3 d-flex justify-content-between'>
+                {item.title}
+                {editBtns(item)}
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        </Col>
+        <Col xs={12} className='mt-5 d-flex justify-content-center'>
+          <PaginationComponent
+            itemsCount={items.data.total}
+            currentPage={page}
+            itemsPerPage={items.data.limit}
+            setPage={setPage}
+          />
+        </Col>
+        <EditRssItem
+          open={edit}
+          setEdit={setEdit}
+          title={post.title}
+          link={post.link}
+          id={post._id}
+        />
+      </Row>
+    </Container>
   )
 }
 
