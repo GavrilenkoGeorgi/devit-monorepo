@@ -20,8 +20,13 @@ class RssService {
     return item
   }
 
-  async getAllItems(limit: number, page: number) {
-    const items = await RssItemModel.paginate({}, { limit, page }) // react-query on frontend
+  async getAllItems(order: number, limit: number, page: number) {
+    let items
+    if (order) {
+      items = await RssItemModel.paginate({}, { limit, page, sort: { title: order } })
+    } else {
+      items = await RssItemModel.paginate({}, { limit, page })
+    }
     return items
   }
 
