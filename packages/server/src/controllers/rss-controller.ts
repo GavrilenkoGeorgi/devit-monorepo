@@ -31,11 +31,23 @@ class RssController {
     })
   }
 
+  async searchItems(req: Request, res: Response, next: NextFunction) {
+    try {
+      const value = req.query.value?.toString() || ''
+      const items = await rssService.searchItems(value)
+      return res.json(items)
+    } catch (err) {
+      next(err)
+    }
+  }
+
   async getItems(req: Request, res: Response, next: NextFunction) {
     try {
       const limit = parseInt(req.query.limit as string) || 10
-      const page =  parseInt(req.query.page as string) || 1
-      const items = await rssService.getAllItems(limit, page)
+      const page = parseInt(req.query.page as string) || 1
+      const order = parseInt(req.query.order as string) || 0
+
+      const items = await rssService.getAllItems(order, limit, page)
       return res.json(items)
     } catch (err) {
       next(err)

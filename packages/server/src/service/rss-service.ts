@@ -9,13 +9,24 @@ type itemUpdProps = {
 
 class RssService {
 
+  async searchItems(value: string) { // need to paginate this results too
+    // const items = await RssItemModel.find({ $text: { $search: value} })
+    const items = await RssItemModel.find({ title: { $regex: value, $options: 'i' } })
+    return items
+  }
+
   async createItem(title: string, link: string, pubDate: string) { // !
     const item = await RssItemModel.create({ title, link, pubDate })
     return item
   }
 
-  async getAllItems(limit: number, page: number) {
-    const items = await RssItemModel.paginate({}, { limit, page }) // react-query on frontend
+  async getAllItems(order: number, limit: number, page: number) {
+    let items
+    if (order) {
+      items = await RssItemModel.paginate({}, { limit, page, sort: { title: order } })
+    } else {
+      items = await RssItemModel.paginate({}, { limit, page })
+    }
     return items
   }
 
