@@ -21,7 +21,7 @@ function Navigation() {
       </Nav.Item>
       <Nav.Item>
         <Nav.Link href="/login">
-          Login/Register
+          Login
         </Nav.Link>
       </Nav.Item>
       <Nav.Item>

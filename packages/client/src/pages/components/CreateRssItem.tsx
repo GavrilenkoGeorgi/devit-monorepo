@@ -1,13 +1,15 @@
-import React, { FC, FormEventHandler, FormEvent, useRef } from 'react'
+import React, { FC } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { SubmitHandler, useForm } from 'react-hook-form'
+
+import { NewItemSchema, NewItemSchemaType } from '../../schemas/CreateNewItemSchema'
 
 import RssItemsService from '../../services/RssItemsService'
-import { Container, Button, Form } from 'react-bootstrap'
+import { Container, Button } from 'react-bootstrap'
 
 const CreateRssItem: FC = () => {
 
-  const titleRef = useRef<HTMLInputElement>(null)
-  const linkRef = useRef<HTMLInputElement>(null)
   const queryClient = useQueryClient()
 
   const createItemMutation = useMutation({
@@ -18,33 +20,52 @@ const CreateRssItem: FC = () => {
     },
   })
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> =
-  (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const { register, reset, handleSubmit, formState } = useForm<NewItemSchemaType>({
+    resolver: zodResolver(NewItemSchema)
+  })
+
+  const onSubmit: SubmitHandler<NewItemSchemaType> = (data) => {
     createItemMutation.mutate({
-      title: titleRef.current?.value || '',
-      link: linkRef.current?.value || '',
-      _id: ''
+      title: data.title || '',
+      link: data.link || '',
+      _id: '' //?
     })
+    reset()
   }
 
-  return <Form onSubmit={handleSubmit}>
-    <Form.Group className='mb-3' controlId='title'>
-      <Form.Label>Title</Form.Label>
-      <Form.Control type='text' placeholder='Enter title'ref={titleRef} />
-    </Form.Group>
+  return <form noValidate onSubmit={handleSubmit(onSubmit)}>
+    <div className='input-group mb-3'>
+      <label>Title</label>
+      <input
+        type='text'
+        placeholder='Enter title'
+        {...register('title')}
+      />
+      {formState.errors.title &&
+      <div className='form-input-error'>
+        {formState.errors.title.message}
+      </div>}
+    </div>
 
-    <Form.Group className='mb-3' controlId='link'>
-      <Form.Label>Link</Form.Label>
-      <Form.Control type='text' placeholder='Enter link' ref={linkRef} />
-    </Form.Group>
+    <div className='input-group mb-3'>
+      <label>Link</label>
+      <input
+        type='text'
+        placeholder='Enter link'
+        {...register('link')}
+      />
+      {formState.errors.link &&
+      <div className='form-input-error'>
+        {formState.errors.link.message}
+      </div>}
+    </div>
     <Container className='text-center'>
       <Button variant='primary' type='submit' className='mx-2' disabled={createItemMutation.isLoading}>
         {createItemMutation.isLoading ? 'Loading...' : 'Create'}
       </Button>
 
     </Container>
-  </Form>
+  </form>
 }
 
 export default CreateRssItem
