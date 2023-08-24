@@ -23,7 +23,7 @@ const DeleteRssItem: FC<delProps> = ({ id }) => {
     deleteItemMutation.mutate(id)
   }
 
-  return <Button variant='danger' onClick={() => handleDelete()}>Delete</Button>
+  return <Button size='sm' variant='danger' onClick={() => handleDelete()}>Delete</Button>
 }
 
 export default DeleteRssItem

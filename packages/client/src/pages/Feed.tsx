@@ -53,7 +53,7 @@ const Feed: FC = () => {
     const pathname = window.location.pathname
     if (store.isAuth && pathname === '/admin') {
       return <div>
-        <Button variant='primary' className='m-2' onClick={() => editItem(item)}>
+        <Button variant='primary' className='m-2' onClick={() => editItem(item)} size='sm'>
           Edit
         </Button>
         <DeleteRssItem id={item._id} />

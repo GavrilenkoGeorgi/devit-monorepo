@@ -74,7 +74,7 @@ const EditRssItem: FC<EditRssItemProps> = ({ id, title, link, open, setEdit }) =
           </div>}
         </div>
         <div className='text-center'>
-          <Button type='submit' disabled={updateItemMutation.isLoading} className='mx-3'>
+          <Button type='submit' disabled={updateItemMutation.isLoading} className='mx-3' size='lg'>
             {updateItemMutation.isLoading ? 'Loading...' : 'Update'}
           </Button>
           <Button onClick={() => setEdit(false)} className='mx-3' variant='secondary'>

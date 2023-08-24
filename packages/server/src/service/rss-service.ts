@@ -14,12 +14,12 @@ class RssService {
 
     let docs
 
-    if (value) {
-      docs = await RssItemModel.find({ title: { $regex: value, $options: 'i' } })
-    }
-
     if (!order && !value) {
       docs = await RssItemModel.find()
+    }
+
+    if (value) {
+      docs = await RssItemModel.find({ title: { $regex: value, $options: 'i' } })
     }
 
     if (order === 1) { // this one is really strange, need to sort this out
