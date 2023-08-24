@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, Dispatch, SetStateAction, } from 'react'
 import Store from '../store/store'
 
 // -- interfaces --
@@ -16,4 +16,12 @@ export type post = {
 
 export type AuthProviderProps = { // this doesn't belong here
   children: ReactNode
+}
+
+export type EditRssItemProps = {
+  title: string,
+  link: string,
+  open: boolean,
+  setEdit: Dispatch<SetStateAction<boolean>>,
+  id: string
 }

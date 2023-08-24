@@ -15,7 +15,7 @@ const Feed: FC = () => {
 
   const [ page, setPage ] = useState<number>(1)
   const [ edit, setEdit ] = useState<boolean>(false)
-  const [ post, setPost ] = useState<post>({} as post)
+  const [ post, setPost ] = useState<post>({} as post) //!
   const [ searchValue, setSearchValue ] = useState<string>('')
   const [ order, setOrder ] = useState<number>(0)
   const { store } = useContext(Context)
