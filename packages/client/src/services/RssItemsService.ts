@@ -5,16 +5,13 @@ import { AuthResponse } from '../models/response/AuthResponse'
 import { post } from '../types'
 
 export default class RssItemsService {
-  static async searchItems(value: string): Promise<AxiosResponse<AuthResponse>> {
-    return $api.post(`/rss-items/search?value=${value}`)
-  }
 
   static async createItem(data: post): Promise<AxiosResponse<AuthResponse>> {
     return $api.post('/rss-items', data)
   }
 
-  static async getItems(order: number, page: number) {
-    return $api.get(`/rss-items?order=${order}&page=${page}`)
+  static async getItems(order: number, page: number, value: string) {
+    return $api.get(`/rss-items?order=${order}&page=${page}&value=${value}`)
   }
 
   static async updateItem(data: post): Promise<AxiosResponse<AuthResponse>> {
