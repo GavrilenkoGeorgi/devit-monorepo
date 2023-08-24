@@ -31,6 +31,16 @@ class RssController {
     })
   }
 
+  async searchItems(req: Request, res: Response, next: NextFunction) {
+    try {
+      const value = req.query.value?.toString() || ''
+      const items = await rssService.searchItems(value)
+      return res.json(items)
+    } catch (err) {
+      next(err)
+    }
+  }
+
   async getItems(req: Request, res: Response, next: NextFunction) {
     try {
       const limit = parseInt(req.query.limit as string) || 10

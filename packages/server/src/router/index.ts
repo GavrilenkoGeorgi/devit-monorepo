@@ -19,3 +19,4 @@ router.get('/rss-items', RssController.getItems)
 router.get('/rss-items/:id', authMiddleware, RssController.getItem)
 router.put('/rss-items/:id', validateResource(createRssItemSchema), authMiddleware, RssController.updateItem)
 router.delete('/rss-items/:id', authMiddleware, RssController.deleteItem)
+router.post('/rss-items/search', RssController.searchItems) // without auth for now
