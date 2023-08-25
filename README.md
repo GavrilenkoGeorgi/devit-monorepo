@@ -9,10 +9,10 @@ Rss feed is being fetched on the backend with the help of cron task at every 15t
 Items are shown on the '/feed' route.
 After login user gains access to protected route '/admin' where he can create, edit and delete items.
 
+Frontend starts on [http://localhost:3000](http://localhost:3000), Swagger docs are available at [http://localhost:5000/docs](http://localhost:5000/docs).
+
 ## Setup
-  - clone repo
-  - cd devit-monorepo
-  
+  I'm using mongoDB Atlas to simplify setup for this task. Add DB_URL to .env file: ``` 'mongodb+srv://root:Fl4qLgBb0UAIGIDN@rss-feed.kiozaxd.mongodb.net/?retryWrites=true&w=majority' ``` env.example is in the packages/server.
   ```
   npm install
   ```
