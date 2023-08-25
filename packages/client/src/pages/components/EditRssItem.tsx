@@ -74,10 +74,10 @@ const EditRssItem: FC<EditRssItemProps> = ({ id, title, link, open, setEdit }) =
           </div>}
         </div>
         <div className='text-center'>
-          <Button type='submit' disabled={updateItemMutation.isLoading} className='mx-3' size='lg'>
+          <Button type='submit' disabled={updateItemMutation.isLoading} className='mx-3' size='sm'>
             {updateItemMutation.isLoading ? 'Loading...' : 'Update'}
           </Button>
-          <Button onClick={() => setEdit(false)} className='mx-3' variant='secondary'>
+          <Button onClick={() => setEdit(false)} className='mx-3' variant='secondary' size='sm'>
             Cancel
           </Button>
         </div>
