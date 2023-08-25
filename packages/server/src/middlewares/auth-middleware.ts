@@ -19,7 +19,7 @@ const authMiddleware = (req: ICustomRequest, res: Response, next: NextFunction) 
     const userData = tokenService.validateAccessToken(accessToken)
 
     if (!userData) {
-      return next(new Error('User not found.'))
+      res.status(401).send('Access token expired.')
     }
 
     next()
