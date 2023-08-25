@@ -8,28 +8,27 @@ class UserController {
   async registration(
     req: Request<object, object, CreateUserInput['body']>,
     res: Response,
-    next: NextFunction) {
+  ) {
     try {
       const { email, password } = req.body
       const userData = await userService.registration({ email, password })
       res.cookie('refreshToken', userData.refreshToken, { maxAge: 2*60*60*1000, httpOnly: true })
       return res.json(userData)
     } catch (err) {
-      next(err)
+      return res.status(409).send(err?.toString())
     }
   }
 
   async login(
     req: Request<object, object, CreateUserInput['body']>,
-    res: Response,
-    next: NextFunction) {
+    res: Response) {
     try {
       const { email, password } = req.body
       const userData = await userService.login({ email, password })
       res.cookie('refreshToken', userData.refreshToken, { maxAge: 2*60*60*1000, httpOnly: true })
       return res.json(userData)
     } catch (err) {
-      next(err)
+      return res.status(409).send(err?.toString())
     }
   }
 
@@ -44,14 +43,14 @@ class UserController {
     }
   }
 
-  async refresh(req: Request, res: Response, next: NextFunction) {
+  async refresh(req: Request, res: Response) {
     try {
       const { refreshToken } = req.cookies
       const userData = await userService.refresh(refreshToken)
       res.cookie('refreshToken', userData.refreshToken, { maxAge: 2*60*60*1000, httpOnly: true })
       return res.json(userData)
     } catch (err) {
-      next(err)
+      return res.status(422).send(err?.toString())
     }
   }
 
