@@ -15,7 +15,7 @@ class RssService {
     let docs
 
     if (!order && !value) {
-      docs = await RssItemModel.find().sort({ pubDate: -1 })
+      docs = await RssItemModel.find()
     }
 
     if (value) {
