@@ -77,12 +77,12 @@ class RssController {
     }
   }
 
-  async getItem(req: Request, res: Response, next: NextFunction) {
+  async getItem(req: Request, res: Response) {
     try {
       const item = await rssService.getItem(req.params.id)
       return res.json(item)
     } catch (err) {
-      next(err)
+      return res.status(404).send(err?.toString())
     }
   }
 }
