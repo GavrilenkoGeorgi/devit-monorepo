@@ -25,7 +25,7 @@ Frontend starts on [http://localhost:3000](http://localhost:3000), Swagger docs 
   docker build -t devit-monorepo .
   ```
   ```
-  docker start -p 3000:3000 -p 5000:5000 devit-monorepo:latest
+  docker run -p 3000:3000 -p 5000:5000 devit-monorepo:latest
   ```
 ## Login
   email: test@example.com
