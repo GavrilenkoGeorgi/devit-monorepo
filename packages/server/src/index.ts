@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
+import swaggerDocs from './utils/swagger'
 
 import { router } from './router'
 import RssController from './controllers/rss-controller'
@@ -31,6 +32,8 @@ const run = async () => {
       RssController.fetchRssFeed()
       // run cron job
       RssController.scheduleFetch()
+      // swagger
+      swaggerDocs(app, PORT as string)
     })
   } catch (e) {
     console.error(e)
