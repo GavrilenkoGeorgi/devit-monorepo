@@ -17,10 +17,11 @@ const LoginForm: FC = () => {
     resolver: zodResolver(LoginDataSchema)
   })
 
-  const onSubmit: SubmitHandler<LoginDataSchemaType> = (data) => {
-    console.log(data)
-    store.login(email, password)
-    navigate('/admin', { replace: true })
+  const onSubmit: SubmitHandler<LoginDataSchemaType> = async () => {
+    const result = await store.login(email, password)
+    if (result) {
+      navigate('/admin', { replace: true })
+    }
   }
 
   const navigate = useNavigate()
@@ -56,6 +57,9 @@ const LoginForm: FC = () => {
         {formState.errors.password.message}
       </div>
       }
+    </div>
+    <div className='form-input-error'>
+      {store.msg}
     </div>
     <Container className='text-center'>
       <Button

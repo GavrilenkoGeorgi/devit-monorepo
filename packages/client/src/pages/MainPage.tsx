@@ -10,6 +10,9 @@ const MainPage = () => {
         <h1 className='text-center my-5'>
           DevIT RSS feed CRUD
         </h1>
+        <div className='text-center'>
+          <a href='/feed'>Public feed</a>
+        </div>
       </Col>
     </Row>
   </Container>

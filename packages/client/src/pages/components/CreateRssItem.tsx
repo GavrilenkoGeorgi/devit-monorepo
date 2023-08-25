@@ -25,10 +25,12 @@ const CreateRssItem: FC = () => {
   })
 
   const onSubmit: SubmitHandler<NewItemSchemaType> = (data) => {
+    const date: Date = new Date()
     createItemMutation.mutate({
       title: data.title || '',
       link: data.link || '',
-      _id: '' //?
+      _id: '', // id is generated on the backend
+      pubDate: date.toISOString()
     })
     reset()
   }

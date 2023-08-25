@@ -11,7 +11,10 @@ const rssItemSchema = {
       required_error: 'link is required',
     })
       .min(2, 'link too short')
-      .max(256, 'link too long')
+      .max(256, 'link too long'),
+    pubDate: string({
+      required_error: 'pubDate is required',
+    })
   })
 }
 

@@ -9,6 +9,7 @@ import { API_URL } from '../http'
 export default class Store {
   user = {} as IUser
   isAuth = false
+  msg = ''
 
   constructor() {
     makeAutoObservable(this)
@@ -22,22 +23,26 @@ export default class Store {
     this.user = user
   }
 
+  setMessage(msg: string) {
+    this.msg = msg
+  }
+
   async login(email: string, password: string) {
     try {
       const response = await AuthService.login(email, password)
-      console.log('login', response)
       localStorage.setItem('token', response.data.accessToken)
       this.setAuth(true)
       this.setUser(response.data.user)
+      return true
     } catch (err) {
-      console.error(err)
+      this.setMessage('Can\'t login, check creds.')
+      return false
     }
   }
 
   async registration(email: string, password: string) {
     try {
       const response = await AuthService.registration(email, password)
-      console.log('register', response)
       localStorage.setItem('token', response.data.accessToken)
       this.setAuth(true)
       this.setUser(response.data.user)
