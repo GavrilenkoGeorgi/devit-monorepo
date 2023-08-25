@@ -20,21 +20,10 @@ const Feed: FC = () => {
   const [ order, setOrder ] = useState<number>(0)
   const { store } = useContext(Context)
 
-  const searchQuery = useQuery({
-    queryKey: ['rss-items/search', { value: searchValue }],
-    keepPreviousData: true,
-    queryFn: () => RssItemsService.searchItems(searchValue)
-  })
-
-  const { data: result } = searchQuery
-  const searchResult = result
-
-  const foundDocs = searchResult?.data as unknown as post[]
-
   const feedQuery = useQuery({
-    queryKey: ['rss-items', { order, page }],
+    queryKey: ['rss-items', { order, page, searchValue }],
     keepPreviousData: true,
-    queryFn: () => RssItemsService.getItems(order, page)
+    queryFn: () => RssItemsService.getItems(order, page, searchValue)
   })
 
   if (feedQuery.status === 'loading') return <h1>Loading...</h1>
@@ -64,7 +53,7 @@ const Feed: FC = () => {
     const pathname = window.location.pathname
     if (store.isAuth && pathname === '/admin') {
       return <div>
-        <Button variant='primary' className='m-2' onClick={() => editItem(item)}>
+        <Button variant='primary' className='m-2' onClick={() => editItem(item)} size='sm'>
           Edit
         </Button>
         <DeleteRssItem id={item._id} />
@@ -100,7 +89,7 @@ const Feed: FC = () => {
           />
         </Col>
       </Row>
-      {searchValue ? list(foundDocs) : list(items.data.docs)}
+      {list(items.data.docs)}
       <Row>
         <Col xs={12} className='mt-5 d-flex justify-content-center'>
           <PaginationComponent

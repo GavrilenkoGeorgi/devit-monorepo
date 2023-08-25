@@ -1,4 +1,5 @@
 import RssItemModel from '../models/rss-item-model'
+import { paginate } from '../utils'
 
 type itemUpdProps = {
   id: string,
@@ -9,25 +10,30 @@ type itemUpdProps = {
 
 class RssService {
 
-  async searchItems(value: string) { // need to paginate this results too
-    // const items = await RssItemModel.find({ $text: { $search: value} })
-    const items = await RssItemModel.find({ title: { $regex: value, $options: 'i' } })
-    return items
+  async getItems(order: number, limit: number, page: number, value: string) {
+
+    let docs
+
+    if (!order && !value) {
+      docs = await RssItemModel.find()
+    }
+
+    if (value) {
+      docs = await RssItemModel.find({ title: { $regex: value, $options: 'i' } })
+    }
+
+    if (order === 1) { // this one is really strange, need to sort this out
+      docs = await RssItemModel.find().sort({ title: 'asc' })
+    } else if (order === -1) {
+      docs = await RssItemModel.find().sort({ title: 'desc' })
+    }
+
+    return paginate(docs as [], page, limit)
   }
 
   async createItem(title: string, link: string, pubDate: string) { // !
     const item = await RssItemModel.create({ title, link, pubDate })
     return item
-  }
-
-  async getAllItems(order: number, limit: number, page: number) {
-    let items
-    if (order) {
-      items = await RssItemModel.paginate({}, { limit, page, sort: { title: order } })
-    } else {
-      items = await RssItemModel.paginate({}, { limit, page })
-    }
-    return items
   }
 
   async getItem(id: string) {
