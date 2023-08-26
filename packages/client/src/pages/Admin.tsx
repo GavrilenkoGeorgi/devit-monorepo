@@ -6,10 +6,12 @@ import CreateRssItem from './components/CreateRssItem'
 
 const Admin: FC = () => {
   return <Container>
-    <Row>
-      <Col xs={12} md={8} className='m-auto'>
-        <h1 className='text-center my-5'>Admin panel</h1>
+    <h1 className='text-center my-5'>Admin panel</h1>
+    <Row className='flex-column align-items-center'>
+      <Col md={5}>
         <CreateRssItem />
+      </Col>
+      <Col>
         <Feed />
       </Col>
     </Row>

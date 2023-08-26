@@ -14,7 +14,7 @@ const DeleteRssItem: FC<delProps> = ({ id }) => {
   const deleteItemMutation = useMutation({
     mutationFn: RssItemsService.deleteItem,
     onSuccess: ({ data }) => {
-      queryClient.setQueryData(['rss-items', { id: data._id }], data)
+      queryClient.setQueryData(['rss-items', { id: data._id }], (oldData) => oldData ? { ...oldData, data }:  oldData)
       queryClient.invalidateQueries(['rss-items'])
     },
   })
@@ -23,7 +23,7 @@ const DeleteRssItem: FC<delProps> = ({ id }) => {
     deleteItemMutation.mutate(id)
   }
 
-  return <Button size='sm' variant='danger' onClick={() => handleDelete()}>Delete</Button>
+  return <Button size='sm' variant='danger' className='m-2' onClick={() => handleDelete()}>Delete</Button>
 }
 
 export default DeleteRssItem

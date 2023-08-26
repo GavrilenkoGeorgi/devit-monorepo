@@ -38,7 +38,7 @@ const EditRssItem: FC<EditRssItemProps> = ({ id, title, link, open, setEdit }) =
   const updateItemMutation = useMutation({
     mutationFn: RssItemsService.updateItem,
     onSuccess: ({ data }) => {
-      queryClient.setQueryData(['rss-items', { id: data._id }], data)
+      queryClient.setQueryData(['rss-items', { id: data._id }], (oldData) => oldData ? { ...oldData, data }:  oldData)
       queryClient.invalidateQueries(['rss-items'])
     },
   })

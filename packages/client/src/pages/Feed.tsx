@@ -10,6 +10,7 @@ import RssItemsService from '../services/RssItemsService'
 import PaginationComponent from './components/PaginationComponent'
 import EditRssItem from './components/EditRssItem'
 import DeleteRssItem from './components/DeleteRssItem'
+import { getReadableDate } from '../utils'
 
 const Feed: FC = () => {
 
@@ -52,20 +53,27 @@ const Feed: FC = () => {
   const editBtns = (item: post) => {
     const pathname = window.location.pathname
     if (store.isAuth && pathname === '/admin') {
-      return <div>
+      return <Container className='d-flex justify-content-end'>
         <Button variant='primary' className='m-2' onClick={() => editItem(item)} size='sm'>
           Edit
         </Button>
         <DeleteRssItem id={item._id} />
-      </div>
+      </Container>
     } else return null
   }
 
   const list = (list: post[]) => {
     return <ListGroup>{list.map((item: post) => (
-      <ListGroup.Item key={item._id} className='py-3 d-flex justify-content-between'>
-        {item.title}
-        {editBtns(item)}
+      <ListGroup.Item key={item._id} className='py-3'>
+        <p className='lead'>
+          {item.title}
+        </p>
+        <p>
+          {getReadableDate(item.pubDate)}
+        </p>
+        <div>
+          {editBtns(item)}
+        </div>
       </ListGroup.Item>
     ))}</ListGroup>
   }
@@ -73,23 +81,25 @@ const Feed: FC = () => {
   return (
     <Container>
       <h1 className='text-center my-5'>Feed</h1>
-      <Row className='mb-3'>
-        <Col sm={6}>
+      <Row className='d-flex justify-content-center'>
+        <Col sm={4} className='mb-2'>
           <Form.Select onChange={e => changeOrder(e)}>
             <option value={0}>Order</option>
             <option value={1}>Ascending</option>
             <option value={-1}>Descending</option>
           </Form.Select>
         </Col>
-        <Col sm={6} className='d-flex'>
+        <Col sm={4} className='mb-4'>
           <Form.Control
-            type="text"
-            placeholder="search"
+            type='text'
+            placeholder='Search'
             onChange={e => search(e.target.value)}
           />
         </Col>
+        <Col md={8}>
+          {list(items.data.docs)}
+        </Col>
       </Row>
-      {list(items.data.docs)}
       <Row>
         <Col xs={12} className='mt-5 d-flex justify-content-center'>
           <PaginationComponent

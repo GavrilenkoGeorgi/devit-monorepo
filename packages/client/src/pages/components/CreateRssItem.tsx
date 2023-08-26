@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { NewItemSchema, NewItemSchemaType } from '../../schemas/NewItemSchema'
 
 import RssItemsService from '../../services/RssItemsService'
-import { Container, Form, Button } from 'react-bootstrap'
+import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import { pubDateForPost } from '../../utils'
 
 const CreateRssItem: FC = () => {
@@ -16,7 +16,7 @@ const CreateRssItem: FC = () => {
   const createItemMutation = useMutation({
     mutationFn: RssItemsService.createItem,
     onSuccess: ({ data }) => {
-      queryClient.setQueryData(['rss-items', { id: data._id }], data)
+      queryClient.setQueryData(['rss-items', { id: data._id }], (oldData) => oldData ? { ...oldData, data }:  oldData)
       queryClient.invalidateQueries(['rss-items'])
     },
   })
@@ -35,42 +35,45 @@ const CreateRssItem: FC = () => {
     reset()
   }
 
-  return <Form noValidate onSubmit={handleSubmit(onSubmit)}>
-    <Form.Group className='mb-3' controlId='title'>
-      <Form.Label>Title</Form.Label>
-      <Form.Control
-        type='text'
-        aria-describedby="titleHelpBlock"
-        isInvalid={!!formState.errors.title?.message || false}
-        {...register('title')}
-      />
-      <Form.Text id="titleHelpBlock" muted>
-        New items appear at the end.
-      </Form.Text>
-      <Form.Control.Feedback type='invalid'>
-        {formState.errors.title?.message}
-      </Form.Control.Feedback>
-    </Form.Group>
+  return <Container>
+    <Row>
+      <Col className='border rounded p-4 mx-2'>
+        <Form noValidate onSubmit={handleSubmit(onSubmit)}>
+          <Form.Group className='mb-3' controlId='title'>
+            <Form.Label>Title</Form.Label>
+            <Form.Control
+              type='text'
+              aria-describedby="titleHelpBlock"
+              isInvalid={!!formState.errors.title?.message || false}
+              {...register('title')}
+            />
+            <Form.Control.Feedback type='invalid'>
+              {formState.errors.title?.message}
+            </Form.Control.Feedback>
+          </Form.Group>
 
-    <Form.Group className='mb-3' controlId='title'>
-      <Form.Label>Link</Form.Label>
-      <Form.Control
-        type='text'
-        isInvalid={!!formState.errors.link?.message || false}
-        {...register('link')}
-      />
-      <Form.Control.Feedback type='invalid'>
-        {formState.errors.link?.message}
-      </Form.Control.Feedback>
-    </Form.Group>
+          <Form.Group className='mb-3' controlId='title'>
+            <Form.Label>Link</Form.Label>
+            <Form.Control
+              type='text'
+              isInvalid={!!formState.errors.link?.message || false}
+              {...register('link')}
+            />
+            <Form.Control.Feedback type='invalid'>
+              {formState.errors.link?.message}
+            </Form.Control.Feedback>
+          </Form.Group>
 
-    <Container className='text-center'>
-      <Button variant='primary' type='submit' className='mx-2' disabled={createItemMutation.isLoading}>
-        {createItemMutation.isLoading ? 'Loading...' : 'Create'}
-      </Button>
+          <Container className='text-center'>
+            <Button variant='primary' type='submit' className='mx-2' disabled={createItemMutation.isLoading}>
+              {createItemMutation.isLoading ? 'Loading...' : 'Create'}
+            </Button>
 
-    </Container>
-  </Form>
+          </Container>
+        </Form>
+      </Col>
+    </Row>
+  </Container>
 }
 
 export default CreateRssItem
