@@ -9,6 +9,7 @@ import Users from '../pages/Users'
 import Admin from '../pages/Admin'
 import Feed from '../pages/Feed'
 import MainPage from '../pages/MainPage'
+import Register from '../pages/Register'
 
 const Routes = () => {
 
@@ -24,6 +25,10 @@ const Routes = () => {
     {
       path: '/login',
       element: <Login />
+    },
+    {
+      path: '/register',
+      element: <Register />
     }
   ]
 

@@ -3,10 +3,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-import { NewItemSchema, NewItemSchemaType } from '../../schemas/CreateNewItemSchema'
+import { NewItemSchema, NewItemSchemaType } from '../../schemas/NewItemSchema'
 
 import RssItemsService from '../../services/RssItemsService'
-import { Container, Button } from 'react-bootstrap'
+import { Container, Form, Button } from 'react-bootstrap'
+import { pubDateForPost } from '../../utils'
 
 const CreateRssItem: FC = () => {
 
@@ -25,49 +26,51 @@ const CreateRssItem: FC = () => {
   })
 
   const onSubmit: SubmitHandler<NewItemSchemaType> = (data) => {
-    const date: Date = new Date()
     createItemMutation.mutate({
       title: data.title || '',
       link: data.link || '',
       _id: '', // id is generated on the backend
-      pubDate: date.toISOString()
+      pubDate: pubDateForPost()
     })
     reset()
   }
 
-  return <form noValidate onSubmit={handleSubmit(onSubmit)}>
-    <div className='input-group mb-3'>
-      <label>Title</label>
-      <input
+  return <Form noValidate onSubmit={handleSubmit(onSubmit)}>
+    <Form.Group className='mb-3' controlId='title'>
+      <Form.Label>Title</Form.Label>
+      <Form.Control
         type='text'
-        placeholder='Enter title'
+        aria-describedby="titleHelpBlock"
+        isInvalid={!!formState.errors.title?.message || false}
         {...register('title')}
       />
-      {formState.errors.title &&
-      <div className='form-input-error'>
-        {formState.errors.title.message}
-      </div>}
-    </div>
+      <Form.Text id="titleHelpBlock" muted>
+        New items apper at the end.
+      </Form.Text>
+      <Form.Control.Feedback type='invalid'>
+        {formState.errors.title?.message}
+      </Form.Control.Feedback>
+    </Form.Group>
 
-    <div className='input-group mb-3'>
-      <label>Link</label>
-      <input
+    <Form.Group className='mb-3' controlId='title'>
+      <Form.Label>Link</Form.Label>
+      <Form.Control
         type='text'
-        placeholder='Enter link'
+        isInvalid={!!formState.errors.link?.message || false}
         {...register('link')}
       />
-      {formState.errors.link &&
-      <div className='form-input-error'>
-        {formState.errors.link.message}
-      </div>}
-    </div>
+      <Form.Control.Feedback type='invalid'>
+        {formState.errors.link?.message}
+      </Form.Control.Feedback>
+    </Form.Group>
+
     <Container className='text-center'>
       <Button variant='primary' type='submit' className='mx-2' disabled={createItemMutation.isLoading}>
         {createItemMutation.isLoading ? 'Loading...' : 'Create'}
       </Button>
 
     </Container>
-  </form>
+  </Form>
 }
 
 export default CreateRssItem
