@@ -45,7 +45,7 @@ const CreateRssItem: FC = () => {
         {...register('title')}
       />
       <Form.Text id="titleHelpBlock" muted>
-        New items apper at the end.
+        New items appear at the end.
       </Form.Text>
       <Form.Control.Feedback type='invalid'>
         {formState.errors.title?.message}
