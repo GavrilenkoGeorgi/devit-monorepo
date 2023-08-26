@@ -1,11 +1,12 @@
 import React, { FC, useEffect, useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Button } from 'react-bootstrap'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import RssItemsService from '../../services/RssItemsService'
-import { NewItemSchema, NewItemSchemaType } from '../../schemas/CreateNewItemSchema'
+import { NewItemSchema, NewItemSchemaType } from '../../schemas/NewItemSchema'
 import { EditRssItemProps } from '../../types'
+import { pubDateForPost } from '../../utils'
+import { Form, Button, Container } from 'react-bootstrap'
 
 const EditRssItem: FC<EditRssItemProps> = ({ id, title, link, open, setEdit }) => {
 
@@ -20,7 +21,7 @@ const EditRssItem: FC<EditRssItemProps> = ({ id, title, link, open, setEdit }) =
     updateItemMutation.mutate({
       title: data.title,
       link: data.link,
-      pubDate: '2023-08-20T18:05:36.000Z', // real date!!
+      pubDate: pubDateForPost(),
       _id: id
     })
     setEdit(false)
@@ -45,43 +46,44 @@ const EditRssItem: FC<EditRssItemProps> = ({ id, title, link, open, setEdit }) =
   if (!open) return null
 
   return (
-    <div className='form-container'>
-      <form noValidate onSubmit={handleSubmit(onSubmit)} className='edit-form'>
+    <div className='form-overlay'>
+      <Form noValidate onSubmit={handleSubmit(onSubmit)} className='edit-form'>
         <h1 className='text-center mb-5'>Edit Post</h1>
-        <div className='input-group mb-3'>
-          <label htmlFor='title'>Title</label>
-          <input
+        <Form.Group className='mb-3' controlId='title'>
+          <Form.Label>Title</Form.Label>
+          <Form.Control
             type='text'
             defaultValue={titleValue}
+            isInvalid={!!formState.errors.title?.message || false}
             {...register('title')}
           />
-          {formState.errors.title &&
-          <div className='form-input-error'>
-            {formState.errors.title.message}
-          </div>}
-        </div>
+          <Form.Control.Feedback type='invalid'>
+            {formState.errors.title?.message}
+          </Form.Control.Feedback>
+        </Form.Group>
 
-        <div className='input-group mb-3'>
-          <label htmlFor='link'>Link</label>
-          <input
+        <Form.Group className='mb-3' controlId='title'>
+          <Form.Label>Link</Form.Label>
+          <Form.Control
             type='text'
             defaultValue={linkValue}
+            isInvalid={!!formState.errors.link?.message || false}
             {...register('link')}
           />
-          {formState.errors.link &&
-          <div className='form-input-error'>
-            {formState.errors.link.message}
-          </div>}
-        </div>
-        <div className='text-center'>
+          <Form.Control.Feedback type='invalid'>
+            {formState.errors.link?.message}
+          </Form.Control.Feedback>
+        </Form.Group>
+
+        <Container className='text-center'>
           <Button type='submit' disabled={updateItemMutation.isLoading} className='mx-3' size='sm'>
             {updateItemMutation.isLoading ? 'Loading...' : 'Update'}
           </Button>
           <Button onClick={() => setEdit(false)} className='mx-3' variant='secondary' size='sm'>
             Cancel
           </Button>
-        </div>
-      </form>
+        </Container>
+      </Form>
     </div>
   )
 }

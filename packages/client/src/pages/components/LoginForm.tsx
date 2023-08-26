@@ -1,66 +1,56 @@
-import React, { FC, useState, useContext } from 'react'
+import React, { FC, useContext } from 'react'
 import { Context } from '../../store'
 import { observer } from 'mobx-react-lite'
 import { useNavigate } from 'react-router-dom'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { Container, Button } from 'react-bootstrap'
+import { Container, Form, Button } from 'react-bootstrap'
 
 import { LoginDataSchema, LoginDataSchemaType } from '../../schemas/LoginDataSchema'
 
 const LoginForm: FC = () => {
 
+  const navigate = useNavigate()
   const { store } = useContext(Context)
-
   const { register, handleSubmit, formState } = useForm<LoginDataSchemaType>({
     resolver: zodResolver(LoginDataSchema)
   })
 
-  const onSubmit: SubmitHandler<LoginDataSchemaType> = async () => {
-    const result = await store.login(email, password)
+  const onSubmit: SubmitHandler<LoginDataSchemaType> = async (data) => {
+    const result = await store.login(data.email, data.password)
     if (result) {
       navigate('/admin', { replace: true })
     }
   }
 
-  const navigate = useNavigate()
-  const [ email, setEmail ] = useState<string>('')
-  const [ password, setPassword ] = useState<string>('')
-
-  return <form noValidate onSubmit={handleSubmit(onSubmit)}>
-    <div className='input-group mb-3'>
-      <label htmlFor='email'>Email address</label>
-      <input
+  return <Form noValidate onSubmit={handleSubmit(onSubmit)}>
+    <Form.Group className='mb-3' controlId='email'>
+      <Form.Label>Email address</Form.Label>
+      <Form.Control
         type='email'
         placeholder='Enter email'
+        isInvalid={!!formState.errors.email?.message || false}
         {...register('email')}
-        onChange={e => setEmail(e.target.value)}
       />
-      {formState.errors.email &&
-      <div className='form-input-error'>
-        {formState.errors.email.message}
-      </div>
-      }
-    </div>
+      <Form.Control.Feedback type="invalid">
+        {formState.errors.email?.message}
+      </Form.Control.Feedback>
+    </Form.Group>
 
-    <div className='input-group mb-3'>
-      <label htmlFor='password'>Password</label>
-      <input
+    <Form.Group className='mb-3' controlId='password'>
+      <Form.Label>Password</Form.Label>
+      <Form.Control
         type='password'
-        placeholder='Password'
+        placeholder='Enter password'
+        isInvalid={!!formState.errors.password?.message || false}
         {...register('password')}
-        onChange={e => setPassword(e.target.value)}
       />
-      {formState.errors.password &&
-      <div className='form-input-error'>
-        {formState.errors.password.message}
-      </div>
-      }
-    </div>
-    <div className='form-input-error'>
-      {store.msg}
-    </div>
+      <Form.Control.Feedback type="invalid">
+        {formState.errors.password?.message}
+      </Form.Control.Feedback>
+    </Form.Group>
+
     <Container className='text-center'>
       <Button
         variant='primary'
@@ -70,7 +60,7 @@ const LoginForm: FC = () => {
         Login
       </Button>
     </Container>
-  </form>
+  </Form>
 }
 
 export default observer(LoginForm)
