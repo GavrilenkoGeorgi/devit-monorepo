@@ -12,7 +12,7 @@ After login user gains access to protected route '/admin' where he can create, e
 Frontend starts on [http://localhost:3000](http://localhost:3000), Swagger docs are available at [http://localhost:5000/docs](http://localhost:5000/docs).
 
 ## Setup
-  I'm using mongoDB Atlas to simplify setup for this task. Add DB_URL to .env file: ``` 'mongodb+srv://root:Fl4qLgBb0UAIGIDN@rss-feed.kiozaxd.mongodb.net/?retryWrites=true&w=majority' ``` env.example is in the packages/server.
+  I'm using mongoDB Atlas to simplify setup for this task. Add DB_URL to .env file. env.example is in the packages/server.
   ```
   npm install
   ```
